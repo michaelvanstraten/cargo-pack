@@ -699,6 +699,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "test-crate"
+version = "0.1.0"
+
+[[package]]
 name = "textwrap"
 version = "0.15.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
