@@ -12,6 +12,6 @@ pub(super) static mut ENCRYPTED_BINARY: [u8; ENCRYPTED_BINARY_LENGTH] =
 
 pub(super) const ENCRYPTION_KEY: &[u8; 32] = include_bytes!(env!("ENCRYPTION_KEY_PATH"));
 
-pub(super) const ENCRYPTION_NONCE: &[u8; 12] = include_bytes!(env!("ENCRYPTION_NONCE_PATH"));
+pub(super) const ENCRYPTION_NONCE: &[u8; 12] = include_bytes!(env!("NONCE_PATH"));
 
 pub(super) const TIMEOUT: Duration = Duration::from_secs(unwrap_ctx!(parse_u64(env!("TIMEOUT"))));

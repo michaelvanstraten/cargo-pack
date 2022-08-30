@@ -1,5 +1,5 @@
 use std::{
-    io::{Result as IOResult, Write},
+    io::{self, Write},
     ops::DerefMut,
 };
 
@@ -20,7 +20,7 @@ pub struct Pack {
 }
 
 impl Pack {
-    pub fn setup(artifact: Artifact) -> IOResult<Self> {
+    pub fn setup(artifact: Artifact) -> io::Result<Self> {
         let input_executable_path = artifact
             .executable
             .expect("should not fail because of previous filtering");
@@ -52,7 +52,7 @@ impl Pack {
         targe_platform: &Option<String>,
         timeout: u64,
         disable_aslr: bool,
-    ) -> IOResult<Artifact> {
+    ) -> io::Result<Artifact> {
         let (key, nonce) = utils::generate_key_and_nonce();
         self.encryption_key_file.write(&key)?;
         self.nonce_file.write(&nonce)?;
@@ -86,7 +86,7 @@ impl Pack {
         previos_compilation: Artifact,
         targe_platform: &Option<String>,
         timeout: u64,
-    ) -> IOResult<Artifact> {
+    ) -> io::Result<Artifact> {
         let input_image_base = 8192u64;
         let shift_rva = 4096u64;
 

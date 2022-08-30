@@ -16,7 +16,7 @@ struct Args {
     target_platform: Option<String>,
     #[clap(short = 'w', long = "timeout", default_value = "300")]
     timeout: u64,
-    #[clap(short = 't', last = true)]
+    #[clap(last = true)]
     cargo_args: Vec<String>,
 }
 
@@ -28,7 +28,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     for artifact in to_pack_artifacts {
         let mut pack = Pack::setup(artifact)?;
-        pack.compile(&args.target_platform, args.timeout, true)?;
+        pack.compile(&args.target_platform, args.timeout, false)?;
     }
 
     Ok(())

@@ -1,6 +1,2 @@
 [workspace]
-members = [
-    "pack",
-    "unpack",
-    "test-crate"
-]
+members = ["unpack", "pack", "test-crate"]

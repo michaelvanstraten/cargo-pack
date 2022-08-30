@@ -34,6 +34,8 @@ fn cargo_build() -> Command {
     cmd
 }
 
+
+
 fn compile_unpacker_base_command(
     encryption_key_filename: &String,
     nonce_filename: &String,
@@ -48,8 +50,15 @@ fn compile_unpacker_base_command(
         .arg("--manifest-path")
         .arg(concat!(
             std::env!("CARGO_MANIFEST_DIR"),
-            "/unpack/Cargo.toml"
+            "/../unpack/Cargo.toml"
         ));
+
+    cmd
+        .env("CARGO_PROFILE_RELEASE_LTO", "true")
+        .env("CARGO_PROFILE_RELEASE_CODEGEN_UNITS", "1")
+        .env("CARGO_PROFILE_RELEASE_PANIC", "abort")
+        .env("CARGO_PROFILE_RELEASE_STRIP", "true")
+        ;
 
     if let Some(target) = target {
         cmd.arg("--target").arg(target);
@@ -57,7 +66,7 @@ fn compile_unpacker_base_command(
 
     cmd.env("ENCRYPTED_BINARY_PATH", compressed_input_target_filename)
         .env("ENCRYPTION_KEY_PATH", encryption_key_filename)
-        .env("ENCRYPTION_NONCE_PATH", nonce_filename)
+        .env("NONCE_PATH", nonce_filename)
         .env("TIMEOUT", timeout.to_string());
 
     cmd

